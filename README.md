@@ -1,6 +1,6 @@
-# Claude Skills
+# Agent Skills
 
-Reusable Claude Code skills and templates for software projects.
+Reusable agent skills and templates for software projects. The repository starts with Claude Code-compatible `SKILL.md` skills, but is intentionally named generically so Codex/OpenCode/other agent skill formats can be added later.
 
 ## Skills
 
@@ -8,14 +8,14 @@ Reusable Claude Code skills and templates for software projects.
 
 ## Usage
 
-Copy a skill directory into your Claude skills directory:
+Copy a skill directory into your agent skills directory:
 
 ```bash
 mkdir -p ~/.claude/skills
 cp -R skills/flutter-release-flow ~/.claude/skills/
 ```
 
-Then ask Claude Code to use the skill by name, for example:
+Then ask Claude Code, Codex, or another compatible agent to use the skill by name, for example:
 
 ```text
 Use the flutter-release-flow skill to set up release automation for this Flutter app.
