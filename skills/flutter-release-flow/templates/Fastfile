@@ -50,6 +50,15 @@ def match_profile_name
   mapping[app_identifier] || "match AppStore #{app_identifier}"
 end
 
+def ensure_ios_export_compliance_metadata!
+  plist = "Runner/Info.plist"
+  value = `/usr/libexec/PlistBuddy -c 'Print :ITSAppUsesNonExemptEncryption' #{plist} 2>/dev/null`.strip
+  return if value == "false"
+
+  sh("/usr/libexec/PlistBuddy -c 'Add :ITSAppUsesNonExemptEncryption bool false' #{plist} 2>/dev/null || /usr/libexec/PlistBuddy -c 'Set :ITSAppUsesNonExemptEncryption false' #{plist}")
+  UI.message("Set ITSAppUsesNonExemptEncryption=false for standard HTTPS/TLS export compliance")
+end
+
 platform :ios do
   desc "One-time: register bundle ID and report whether ASC app record exists"
   lane :bootstrap do
@@ -107,6 +116,7 @@ platform :ios do
       profile_name: match_profile_name,
       targets: ["Runner"]
     )
+    ensure_ios_export_compliance_metadata!
     sh("cd ../.. && env -u GEM_HOME -u GEM_PATH -u BUNDLE_GEMFILE -u BUNDLE_BIN_PATH -u RUBYOPT flutter build ios --release --no-codesign #{FLUTTER_DART_DEFINES}")
     clean_flutter_subprocess_env!
     ipa = build_app(workspace: "Runner.xcworkspace", scheme: "Runner", export_method: "app-store")
@@ -135,6 +145,7 @@ platform :ios do
       increment_build_number(xcodeproj: "Runner.xcodeproj")
     end
 
+    ensure_ios_export_compliance_metadata!
     sh("cd ../.. && env -u GEM_HOME -u GEM_PATH -u BUNDLE_GEMFILE -u BUNDLE_BIN_PATH -u RUBYOPT flutter build ios --release --no-codesign #{FLUTTER_DART_DEFINES}")
     clean_flutter_subprocess_env!
     ipa_path = build_app(workspace: "Runner.xcworkspace", scheme: "Runner", export_method: "app-store")
@@ -154,6 +165,7 @@ platform :ios do
       profile_name: match_profile_name,
       targets: ["Runner"]
     )
+    ensure_ios_export_compliance_metadata!
     sh("cd ../.. && env -u GEM_HOME -u GEM_PATH -u BUNDLE_GEMFILE -u BUNDLE_BIN_PATH -u RUBYOPT flutter build ios --release --no-codesign #{FLUTTER_DART_DEFINES}")
     clean_flutter_subprocess_env!
     ipa_path = build_app(workspace: "Runner.xcworkspace", scheme: "Runner", export_method: "app-store")

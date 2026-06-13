@@ -100,11 +100,12 @@ All apps should follow the same release spine even when app-specific lanes exist
 1. Load App Store Connect API key from env.
 2. Sync signing with `match` from the shared Apple-team branch.
 3. Keep normal lanes read-only for signing assets.
-4. Bump build number from TestFlight or CI run number.
-5. Build Flutter release artifacts with Ruby/Bundler env stripped.
-6. Archive/export with Fastlane/Xcode signing.
-7. Upload to TestFlight for `beta`.
-8. Submit/upload to App Store for `release` only when explicitly requested.
+4. Ensure App Store compliance metadata is present before building.
+5. Bump build number from TestFlight or CI run number.
+6. Build Flutter release artifacts with Ruby/Bundler env stripped.
+7. Archive/export with Fastlane/Xcode signing.
+8. Upload to TestFlight for `beta`.
+9. Submit/upload to App Store for `release` only when explicitly requested.
 
 ## Standard env names
 
@@ -139,6 +140,25 @@ Never commit real `.env`, `.p8`, certificates, profiles, provisioning profiles, 
 - Normal `beta`, `build`, and `release` lanes use `readonly: true`.
 - One-time `certificates` / `create_profile` lanes may use `readonly: false` only to create missing app profiles.
 - Do not revoke, nuke, rotate, or regenerate team distribution certificates without explicit approval.
+
+## App Store compliance metadata
+
+For iOS apps that only use standard HTTPS/TLS encryption and do not use non-exempt/custom cryptography, set this in `ios/Runner/Info.plist` **before building**:
+
+```xml
+<key>ITSAppUsesNonExemptEncryption</key>
+<false/>
+```
+
+This prevents future TestFlight/App Store builds from showing **Missing Compliance** for export compliance. It only affects builds created after the key is present; already-uploaded builds may still need compliance answered manually in App Store Connect or a new build uploaded.
+
+When adding this for a project, verify with:
+
+```bash
+/usr/libexec/PlistBuddy -c 'Print :ITSAppUsesNonExemptEncryption' ios/Runner/Info.plist
+```
+
+Only set it to `false` when the app does not use non-exempt encryption. If the app has custom crypto, VPN, secure messaging, proprietary encryption, or regulated crypto features, stop and get the correct compliance answer instead of assuming exemption.
 
 ## Standard Fastlane files
 
@@ -205,6 +225,20 @@ def clean_flutter_subprocess_env!
   %w[GEM_HOME GEM_PATH BUNDLE_GEMFILE BUNDLE_BIN_PATH RUBYOPT RUBYLIB].each { |k| ENV.delete(k) }
   ENV["PATH"] = "/opt/homebrew/bin:#{ENV['PATH']}" unless ENV["PATH"].to_s.include?("/opt/homebrew/bin")
 end
+
+def match_profile_name
+  mapping = Actions.lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING] || {}
+  mapping[app_identifier] || "match AppStore #{app_identifier}"
+end
+
+def ensure_ios_export_compliance_metadata!
+  plist = "Runner/Info.plist"
+  value = `/usr/libexec/PlistBuddy -c 'Print :ITSAppUsesNonExemptEncryption' #{plist} 2>/dev/null`.strip
+  return if value == "false"
+
+  sh("/usr/libexec/PlistBuddy -c 'Add :ITSAppUsesNonExemptEncryption bool false' #{plist} 2>/dev/null || /usr/libexec/PlistBuddy -c 'Set :ITSAppUsesNonExemptEncryption false' #{plist}")
+  UI.message("Set ITSAppUsesNonExemptEncryption=false for standard HTTPS/TLS export compliance")
+end
 ```
 
 If an existing app uses `load_asc_api_key`, either keep it as an alias or make it equivalent.
@@ -242,6 +276,7 @@ lane :beta do
     increment_build_number(xcodeproj: "Runner.xcodeproj")
   end
 
+  ensure_ios_export_compliance_metadata!
   sh("cd ../.. && env -u GEM_HOME -u GEM_PATH -u BUNDLE_GEMFILE -u BUNDLE_BIN_PATH -u RUBYOPT flutter build ios --release --no-codesign")
 
   clean_flutter_subprocess_env!
