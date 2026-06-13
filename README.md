@@ -8,12 +8,14 @@ Reusable agent skills and templates for software projects. The repository starts
 
 ## Usage
 
-Copy a skill directory into your agent skills directory:
+For Claude Code, copy a skill directory into your Claude skills directory:
 
 ```bash
 mkdir -p ~/.claude/skills
 cp -R skills/flutter-release-flow ~/.claude/skills/
 ```
+
+Future Codex/OpenCode-compatible formats can live alongside `skills/` when we add them.
 
 Then ask Claude Code, Codex, or another compatible agent to use the skill by name, for example:
 
