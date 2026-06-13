@@ -1,0 +1,4 @@
+app_identifier(ENV["APP_IDENTIFIER"] || "<bundle id>")
+team_id(ENV["APPLE_TEAM_ID"] || ENV["TEAM_ID"] || "<apple team id>")
+apple_id(ENV["APPLE_ID"])
+itc_team_id(ENV["ITC_TEAM_ID"])

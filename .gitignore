@@ -1,0 +1,20 @@
+# Secrets and local env
+.env
+.env.*
+!.env.example
+*.p8
+*.p12
+*.cer
+*.mobileprovision
+
+# Build/release outputs
+build/
+derivedData/
+*.ipa
+*.xcarchive
+*.dSYM.zip
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
