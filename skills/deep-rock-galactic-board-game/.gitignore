@@ -1,0 +1,16 @@
+# Local configs and generated indexes
+sources.local.json
+*.local.json
+.drg-index/
+rag/
+
+# Generated index artifacts, wherever a user chooses to build them inside the skill dir
+chunks.jsonl
+manifest.json
+*.sqlite
+*.db
+
+# Source material should stay local/private unless explicitly licensed for redistribution
+*.pdf
+*.epub
+*.docx

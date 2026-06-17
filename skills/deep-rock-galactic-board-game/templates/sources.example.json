@@ -1,0 +1,14 @@
+{
+  "source_dir": "/path/to/your/local/drg-board-game-docs",
+  "index_dir": "/tmp/drg-index",
+  "docs": [
+    "example-rules-notes.md",
+    "example-expansion-notes.md"
+  ],
+  "globs": [
+    "*.md",
+    "*.markdown",
+    "*.txt"
+  ],
+  "max_excerpt_chars": 360
+}

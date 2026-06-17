@@ -138,6 +138,7 @@ Never commit real `.env`, `.p8`, certificates, profiles, provisioning profiles, 
 - Provisioning profiles are app/bundle-ID-level.
 - Shared match branch: `apple-team-<team id>`.
 - Normal `beta`, `build`, and `release` lanes use `readonly: true`.
+- Local lanes use the current default user keychain (normally `login.keychain-db`); do not call `setup_ci` or `create_keychain` unless explicitly setting up isolated CI signing.
 - One-time `certificates` / `create_profile` lanes may use `readonly: false` only to create missing app profiles.
 - Do not revoke, nuke, rotate, or regenerate team distribution certificates without explicit approval.
 
@@ -239,25 +240,27 @@ def ensure_ios_export_compliance_metadata!
   sh("/usr/libexec/PlistBuddy -c 'Add :ITSAppUsesNonExemptEncryption bool false' #{plist} 2>/dev/null || /usr/libexec/PlistBuddy -c 'Set :ITSAppUsesNonExemptEncryption false' #{plist}")
   UI.message("Set ITSAppUsesNonExemptEncryption=false for standard HTTPS/TLS export compliance")
 end
+
+def install_signing_assets(api_key, readonly: true)
+  # Do not call setup_ci/create_keychain here: those create and switch to a
+  # Fastlane temp keychain (for example fastlane_tmp_keychain-db). Local builds
+  # should use the current user default keychain (normally login.keychain-db).
+  # App Store Connect API-key auth avoids Apple ID/2FA, but macOS codesigning
+  # still requires the distribution private key to be available via a keychain.
+  match(type: "appstore", readonly: readonly, api_key: api_key, app_identifier: app_identifier)
+end
 ```
 
 If an existing app uses `load_asc_api_key`, either keep it as an alias or make it equivalent.
 
 ## Standard iOS beta lane spine
 
-The lane body can differ for app-specific needs, but the order should remain:
+The lane body can differ for app-specific needs, but the order should remain. Use `install_signing_assets(api_key)` rather than `setup_ci`/`create_keychain` for local project lanes so Fastlane does not create or switch to a temp keychain.
 
 ```ruby
 lane :beta do
   api_key = asc_api_key
-  setup_ci(force: true)
-
-  match(
-    type: "appstore",
-    readonly: true,
-    api_key: api_key,
-    app_identifier: app_identifier
-  )
+  install_signing_assets(api_key)
 
   update_code_signing_settings(
     use_automatic_signing: false,
