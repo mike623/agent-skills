@@ -107,6 +107,34 @@ All apps should follow the same release spine even when app-specific lanes exist
 8. Upload to TestFlight for `beta`.
 9. Submit/upload to App Store for `release` only when explicitly requested.
 
+## Release notes / What to Test metadata
+
+Before any TestFlight/App Store release, update the maintained release-note file from recent commits/changelogs. Do this for **every active Fastlane project**, not just the repo currently in focus.
+
+Discovery command:
+
+```bash
+find /Users/mikewong/workspace -path '*/fastlane/Fastfile' \
+  -not -path '*/.claude/worktrees/*' \
+  -not -path '*/node_modules/*' \
+  -print | sort
+```
+
+Current active projects and metadata conventions:
+
+- PurrSafe/Catty2: `/Users/mikewong/workspace/catty2/purrsafe_flutter/fastlane/metadata/whats_new.txt` is the TestFlight changelog used by `ios beta`; also keep `fastlane/metadata/en-US/release_notes.txt` aligned for App Store metadata.
+- CoupleCup: `/Users/mikewong/workspace/CoupleCup/app/couple_cup/ios/fastlane/metadata/en-US/release_notes.txt`; `ios beta` should read this file for `upload_to_testflight(changelog:)`.
+- Mr. Carson mobile: `/Users/mikewong/workspace/mr-carson/apps/mobile/ios/fastlane/metadata/en-US/release_notes.txt`; `ios beta` should read this file for `upload_to_testflight(changelog:)`.
+
+Metadata workflow:
+
+1. Inspect branch/status and recent commits: `git status --short --branch` and `git log --oneline --decorate -30`.
+2. Prefer changes since the last release/build bump when obvious; otherwise summarize the most recent user-facing feature/fix commits.
+3. Write tester-facing bullets: features first, then fixes/reliability, then a short `Please test:` checklist for TestFlight.
+4. Ensure the relevant beta lane passes the file content into `upload_to_testflight(changelog: File.read(...).strip)` instead of hardcoded text like `"Latest build"`.
+5. Keep release notes free of internal-only details, secrets, private URLs, and excessive implementation jargon unless testers need it.
+6. Verify with `ruby -c <fastlane/Fastfile>` and inspect `git diff` before reporting.
+
 ## Standard env names
 
 Use these names across all apps. Legacy names can exist as fallbacks only.
