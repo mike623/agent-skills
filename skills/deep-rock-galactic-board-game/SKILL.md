@@ -13,6 +13,7 @@ Public-safe constraints:
 - Do **not** commit PDFs, extracted rulebook chunks, generated indexes, private filesystem paths, tokens, or profile state.
 - Treat the scripts as generic tooling: the user must provide `--source-dir`, `DRG_SOURCE_DIR`, or a local config copied from `templates/sources.example.json`.
 - Prefer concise answers with source/page/heading citations. If a rule is uncertain, say so and point to the retrieved citation instead of inventing wording.
+- For generic/non-DRG board-game agents from BGG links or arbitrary PDFs, use `boardgame-rag-bot` instead.
 
 ## Quick setup
 

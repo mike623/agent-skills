@@ -1,0 +1,18 @@
+# Private/generated board-game source material and indexes
+agents/
+source-documents/
+sources/
+rag/
+*.pdf
+*.PDF
+*.djvu
+*.epub
+*.mobi
+*.azw3
+*.npy
+*.pkl
+chunks.jsonl
+manifest.json
+*.raw.txt
+*.raw.md
+rulebook.md

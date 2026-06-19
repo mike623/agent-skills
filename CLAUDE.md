@@ -31,7 +31,8 @@ When a skill references real local paths in examples, use placeholders like `<pa
 
 - **`flutter-release-flow`** — opinionated Flutter release *standard* (not a script). Encodes one repeatable toolchain: `mise` for Ruby, Bundler-pinned Fastlane/CocoaPods, Apple `match` signing from a shared team branch, and a fixed release spine (load API key → sync signing → compliance metadata → bump build → build → archive → TestFlight/App Store). Templates in `templates/` are the canonical starting files for a new app's `ios/fastlane/`.
 - **`career-operations`** — job-search co-pilot built around the external `santifer/career-ops` tool. Core principle: durable preferences live in machine-readable config (`config/profile.yml`, `modes/_profile.md`, `portals.yml`), not chat, and edits are verified with `npm run verify` / `sync-check` / `doctor`. Reference workflows in `references/`.
-- **`deep-rock-galactic-board-game`** — local rules-lookup pipeline. The only skill with runnable code.
+- **`deep-rock-galactic-board-game`** — local rules-lookup pipeline. Stdlib-only Python 3 lexical index/lookup for user-supplied DRG notes.
+- **`boardgame-rag-bot`** — generic BGG/PDF → private board-game rules agent factory. Ships bootstrap/build/lookup scripts and templates; optional semantic dependencies are allowed, but generated source documents and indexes must stay outside the public repo.
 
 ## deep-rock-galactic-board-game scripts
 

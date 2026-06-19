@@ -18,3 +18,4 @@ derivedData/
 .DS_Store
 .idea/
 .vscode/
+.omc/
