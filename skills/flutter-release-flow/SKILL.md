@@ -166,7 +166,7 @@ Never commit real `.env`, `.p8`, certificates, profiles, provisioning profiles, 
 - Provisioning profiles are app/bundle-ID-level.
 - Shared match branch: `apple-team-<team id>`.
 - Normal `beta`, `build`, and `release` lanes use `readonly: true`.
-- Local lanes use the current default user keychain (normally `login.keychain-db`); do not call `setup_ci` or `create_keychain` unless explicitly setting up isolated CI signing.
+- Local lanes must not create, switch, unlock, delete, reset, or pass explicit keychain settings. Never call `setup_ci`, `create_keychain`, `unlock_keychain`, `delete_keychain`, or `match(..., keychain_name:/keychain_password:)` for local dev. Temporary keychain setup is only allowed in explicitly CI-only paths guarded by `ENV["CI"] == "true"`.
 - One-time `certificates` / `create_profile` lanes may use `readonly: false` only to create missing app profiles.
 - Do not revoke, nuke, rotate, or regenerate team distribution certificates without explicit approval.
 
@@ -270,11 +270,12 @@ def ensure_ios_export_compliance_metadata!
 end
 
 def install_signing_assets(api_key, readonly: true)
-  # Do not call setup_ci/create_keychain here: those create and switch to a
-  # Fastlane temp keychain (for example fastlane_tmp_keychain-db). Local builds
-  # should use the current user default keychain (normally login.keychain-db).
+  # Local dev must not touch keychains: do not create, switch, unlock, delete,
+  # reset, or pass explicit keychain settings. Temporary keychain setup belongs
+  # only in CI=true-only lanes, never in local beta/build/release lanes.
   # App Store Connect API-key auth avoids Apple ID/2FA, but macOS codesigning
-  # still requires the distribution private key to be available via a keychain.
+  # still requires the distribution private key to be available through the
+  # existing macOS signing environment.
   match(type: "appstore", readonly: readonly, api_key: api_key, app_identifier: app_identifier)
 end
 ```
@@ -283,7 +284,7 @@ If an existing app uses `load_asc_api_key`, either keep it as an alias or make i
 
 ## Standard iOS beta lane spine
 
-The lane body can differ for app-specific needs, but the order should remain. Use `install_signing_assets(api_key)` rather than `setup_ci`/`create_keychain` for local project lanes so Fastlane does not create or switch to a temp keychain.
+The lane body can differ for app-specific needs, but the order should remain. Use `install_signing_assets(api_key)` for local project lanes. Local dev must never create, switch, unlock, delete, reset, or pass explicit keychain settings; temporary keychains are only acceptable in explicitly CI-only paths guarded by `ENV["CI"] == "true"`.
 
 ```ruby
 lane :beta do
