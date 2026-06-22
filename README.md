@@ -13,6 +13,9 @@ Each skill is a self-contained `SKILL.md` directory that any compatible agent �
 | [`deep-rock-galactic-board-game`](skills/deep-rock-galactic-board-game) | Public-safe *Deep Rock Galactic: The Board Game* rules assistant backed by a user-built local index of legally obtained notes. |
 | [`boardgame-rag-bot`](skills/boardgame-rag-bot) | Generic board-game rules-agent factory: BGG metadata + user-provided rulebook PDF → private semantic/lexical RAG package with citations. |
 | [`raindrop-bookmark-curator`](skills/raindrop-bookmark-curator) | Raindrop.io bookmark curation: scan recent/state-tracked items, extract public content, rename titles, update descriptions, add tags, sort into collections, write optional Markdown notes, and track state. |
+| [`life-agent-modes`](skills/life-agent-modes) | Persistent mode-routing rules for a general life agent: concierge, research librarian, engineering first mate, operator, career ops, and creative studio without over-applying one mindset. |
+| [`engineering-first-mate`](skills/engineering-first-mate) | Engineering coordination playbook for coding-agent lanes, worktrees, tests, evidence, PRs, verification, and risk reporting. |
+| [`youtube-second-brain`](skills/youtube-second-brain) | YouTube-to-second-brain workflow: transcripts, summaries, claims, actions, Obsidian-style notes, Raindrop metadata, and NotebookLM-ready source packs. |
 
 ## Install
 
@@ -55,7 +58,10 @@ skills/
 ├── career-operations/             # SKILL.md + job-search reference workflows
 ├── deep-rock-galactic-board-game/ # SKILL.md + local-index build/lookup scripts
 ├── boardgame-rag-bot/             # Generic BGG/PDF → private semantic RAG agent factory
-└── raindrop-bookmark-curator/     # Raindrop title/description/tag/collection curation workflow
+├── raindrop-bookmark-curator/     # Raindrop title/description/tag/collection curation workflow
+├── life-agent-modes/              # General-agent mode routing and anti-overengineering rules
+├── engineering-first-mate/        # Coding-agent orchestration, evidence, and risk reporting
+└── youtube-second-brain/          # YouTube transcript/note/NotebookLM source-pack workflow
 ```
 
 The flat `skills/<name>/SKILL.md` layout is what the `skills` CLI discovers automatically.

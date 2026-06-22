@@ -27,12 +27,16 @@ This is a **public repo** holding generic tooling only. This constraint is woven
 
 When a skill references real local paths in examples, use placeholders like `<path-to-existing-app>` (see `flutter-release-flow/SKILL.md`).
 
-## The three skills
+## Current skills
 
 - **`flutter-release-flow`** — opinionated Flutter release *standard* (not a script). Encodes one repeatable toolchain: `mise` for Ruby, Bundler-pinned Fastlane/CocoaPods, Apple `match` signing from a shared team branch, and a fixed release spine (load API key → sync signing → compliance metadata → bump build → build → archive → TestFlight/App Store). Templates in `templates/` are the canonical starting files for a new app's `ios/fastlane/`.
 - **`career-operations`** — job-search co-pilot built around the external `santifer/career-ops` tool. Core principle: durable preferences live in machine-readable config (`config/profile.yml`, `modes/_profile.md`, `portals.yml`), not chat, and edits are verified with `npm run verify` / `sync-check` / `doctor`. Reference workflows in `references/`.
 - **`deep-rock-galactic-board-game`** — local rules-lookup pipeline. Stdlib-only Python 3 lexical index/lookup for user-supplied DRG notes.
 - **`boardgame-rag-bot`** — generic BGG/PDF → private board-game rules agent factory. Ships bootstrap/build/lookup scripts and templates; optional semantic dependencies are allowed, but generated source documents and indexes must stay outside the public repo.
+- **`raindrop-bookmark-curator`** — Raindrop.io bookmark curation and optional Markdown/Obsidian note workflow; keep examples public-safe and avoid real bookmark IDs/state.
+- **`life-agent-modes`** — persistent mode-routing rules for a general life agent so specialist modes do not leak into ordinary tasks.
+- **`engineering-first-mate`** — coding-agent coordination, evidence collection, worktree/lane discipline, and risk reporting.
+- **`youtube-second-brain`** — YouTube transcript-to-knowledge workflow for notes, Raindrop metadata, and NotebookLM-ready source packs.
 
 ## deep-rock-galactic-board-game scripts
 
