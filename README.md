@@ -12,6 +12,7 @@ Each skill is a self-contained `SKILL.md` directory that any compatible agent �
 | [`career-operations`](skills/career-operations) | Job-search operations co-pilot: role scanning, UK job-board sweeps, fit/salary/location evaluation, CV tailoring, application tracking, and `ctx7`/Context7 doc lookups. |
 | [`deep-rock-galactic-board-game`](skills/deep-rock-galactic-board-game) | Public-safe *Deep Rock Galactic: The Board Game* rules assistant backed by a user-built local index of legally obtained notes. |
 | [`boardgame-rag-bot`](skills/boardgame-rag-bot) | Generic board-game rules-agent factory: BGG metadata + user-provided rulebook PDF → private semantic/lexical RAG package with citations. |
+| [`raindrop-bookmark-curator`](skills/raindrop-bookmark-curator) | Raindrop.io bookmark curation: scan recent/state-tracked items, extract public content, rename titles, update descriptions, add tags, sort into collections, write optional Markdown notes, and track state. |
 
 ## Install
 
@@ -53,7 +54,8 @@ skills/
 ├── flutter-release-flow/          # SKILL.md + Fastlane/mise/Gemfile templates
 ├── career-operations/             # SKILL.md + job-search reference workflows
 ├── deep-rock-galactic-board-game/ # SKILL.md + local-index build/lookup scripts
-└── boardgame-rag-bot/             # Generic BGG/PDF → private semantic RAG agent factory
+├── boardgame-rag-bot/             # Generic BGG/PDF → private semantic RAG agent factory
+└── raindrop-bookmark-curator/     # Raindrop title/description/tag/collection curation workflow
 ```
 
 The flat `skills/<name>/SKILL.md` layout is what the `skills` CLI discovers automatically.

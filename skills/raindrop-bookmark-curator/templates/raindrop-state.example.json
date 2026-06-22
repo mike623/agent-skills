@@ -1,0 +1,27 @@
+{
+  "processed_bookmark_ids": [],
+  "last_checked_at": null,
+  "last_metadata_reprocessed_at": null,
+  "notes": "Example state for a Raindrop bookmark curation pipeline. Copy locally and customize; do not commit real state.",
+  "collections": {
+    "Example Collection": 123456
+  },
+  "processed_notes": {
+    "123456789": "<vault-or-output-dir>/AI Inbox/Processed/YYYY-MM-DD - raindrop-123456789 - clean-title.md"
+  },
+  "bookmark_metadata": {
+    "123456789": {
+      "last_metadata_reprocessed_at": "YYYY-MM-DDTHH:MM:SS+0000",
+      "applied_title": "Clean content-based title",
+      "applied_description": "One or two grounded sentences describing the bookmark and why it matters.",
+      "applied_collection": "Example Collection",
+      "applied_collection_id": 123456,
+      "applied_tags": [
+        "example",
+        "tag"
+      ],
+      "processed_note": "<vault-or-output-dir>/AI Inbox/Processed/YYYY-MM-DD - raindrop-123456789 - clean-title.md",
+      "status": "processed"
+    }
+  }
+}
