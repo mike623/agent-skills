@@ -114,7 +114,7 @@ Before any TestFlight/App Store release, update the maintained release-note file
 Discovery command:
 
 ```bash
-find /Users/mikewong/workspace -path '*/fastlane/Fastfile' \
+find <workspace-root> -path '*/fastlane/Fastfile' \
   -not -path '*/.claude/worktrees/*' \
   -not -path '*/node_modules/*' \
   -print | sort
@@ -122,9 +122,8 @@ find /Users/mikewong/workspace -path '*/fastlane/Fastfile' \
 
 Current active projects and metadata conventions:
 
-- PurrSafe/Catty2: `/Users/mikewong/workspace/catty2/purrsafe_flutter/fastlane/metadata/whats_new.txt` is the TestFlight changelog used by `ios beta`; also keep `fastlane/metadata/en-US/release_notes.txt` aligned for App Store metadata.
-- CoupleCup: `/Users/mikewong/workspace/CoupleCup/app/couple_cup/ios/fastlane/metadata/en-US/release_notes.txt`; `ios beta` should read this file for `upload_to_testflight(changelog:)`.
-- Mr. Carson mobile: `/Users/mikewong/workspace/mr-carson/apps/mobile/ios/fastlane/metadata/en-US/release_notes.txt`; `ios beta` should read this file for `upload_to_testflight(changelog:)`.
+- Project-specific TestFlight/App Store metadata paths should use repo-relative paths, for example `ios/fastlane/metadata/en-US/release_notes.txt` or `fastlane/metadata/whats_new.txt`.
+- Do not commit private absolute workspace paths in this public skill repo; keep local project mappings in private notes/config.
 
 Metadata workflow:
 

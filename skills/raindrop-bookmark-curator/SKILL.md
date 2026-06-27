@@ -70,6 +70,8 @@ On first use, the tool may require OAuth in the user's browser. Do not ask the u
 6. **Optional note output**
    - If requested, write one Markdown note per bookmark.
    - Include source metadata, original visible text/excerpt, external links found, external link summaries, useful public comments if available, TL;DR, key ideas, why it matters, and follow-up actions.
+   - For idea-capture workflows, optionally generate atomic idea cards in a separate folder. Each card should be one transferable idea, source-grounded, and include: `## The idea`, `## Why it matters`, `## Try this`, `## Use when`, `## Source evidence`, and `## Related`.
+   - Track generated card paths in state as `idea_cards[bookmark_id] = [paths...]`, and add an `## Idea cards generated` section to the source note.
 
 7. **Mutate Raindrop**
    - Use `update_bookmarks` for title, note/description, collection, and tags.
